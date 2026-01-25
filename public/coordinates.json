@@ -1,0 +1,462 @@
+[
+  {
+    "id": 1,
+    "name": "Community Space",
+    "siteName": "Al-Farra Site",
+    "coordinates": {
+      "latitude": 31.360035,
+      "longitude": 34.270306
+    }
+  },
+  {
+    "id": 2,
+    "name": "Community Space",
+    "siteName": "Al-Shorbaji",
+    "coordinates": {
+      "latitude": 31.363436,
+      "longitude": 34.270705
+    }
+  },
+  {
+    "id": 3,
+    "name": "Community Space",
+    "siteName": "Al-Hayat",
+    "coordinates": {
+      "latitude": 31.362092,
+      "longitude": 34.266418
+    }
+  },
+  {
+    "id": 4,
+    "name": "Community Space",
+    "siteName": "Al-Shahri",
+    "coordinates": {
+      "latitude": 31.361347,
+      "longitude": 34.269997
+    }
+  },
+  {
+    "id": 5,
+    "name": "Community Space",
+    "siteName": "Al-Quds Site (Abdeen Area)",
+    "coordinates": {
+      "latitude": 31.360058,
+      "longitude": 34.26543
+    }
+  },
+  {
+    "id": 6,
+    "name": "Community Space",
+    "siteName": "Al-Nakheel & Al-Zytoon Site",
+    "coordinates": {
+      "latitude": 31.361111,
+      "longitude": 34.266037
+    }
+  },
+  {
+    "id": 7,
+    "name": "Community Space",
+    "siteName": "Al-Fedaa Site",
+    "coordinates": {
+      "latitude": 31.35977,
+      "longitude": 34.263876
+    }
+  },
+  {
+    "id": 8,
+    "name": "Community Space",
+    "siteName": "Wijdan Site",
+    "coordinates": {
+      "latitude": 31.358243,
+      "longitude": 34.268270
+    }
+  },
+  {
+    "id": 9,
+    "name": "Community Space",
+    "siteName": "Yafa Site",
+    "coordinates": {
+      "latitude": 31.357908,
+      "longitude": 34.268505
+    }
+  },
+  {
+    "id": 10,
+    "name": "Community Space",
+    "siteName": "Al-Karam",
+    "coordinates": {
+      "latitude": 31.364027,
+      "longitude": 34.276211
+    }
+  },
+  {
+    "id": 11,
+    "name": "Community Space",
+    "siteName": "Al-Nour",
+    "coordinates": {
+      "latitude": 31.364656,
+      "longitude": 34.27368
+    }
+  },
+  {
+    "id": 12,
+    "name": "Community Space",
+    "siteName": "Al-Farooq Site (Abu Farooq Area)",
+    "coordinates": {
+      "latitude": 31.36362, 
+      "longitude": 34.27162
+    }
+  },
+  {
+    "id": 13,
+    "name": "Community Space",
+    "siteName": "Shady Site",
+    "coordinates": {
+      "latitude": 31.36247,
+      "longitude": 34.27254
+    }
+  },
+  {
+    "id": 14,
+    "name": "Water Trucking Distribution Point",
+    "siteName": "Al-Mosalla Site",
+    "coordinates": {
+      "latitude": 31.360520,
+      "longitude": 34.273290
+    }
+  },
+  {
+    "id": 15,
+    "name": "Water Trucking Distribution Point",
+    "siteName": "Al-Farra Site",
+    "coordinates": {
+      "latitude": 31.360533,
+      "longitude": 34.269962
+    }
+  },
+  {
+    "id": 16,
+    "name": "Water Trucking Distribution Point",
+    "siteName": "Al-Quds Site (Al-Hayat Area)",
+    "coordinates": {
+      "latitude": 31.363693,
+      "longitude": 34.269490
+    }
+  },
+  {
+    "id": 17,
+    "name": "Water Trucking Distribution Point",
+    "siteName": "Hayat Site",
+    "coordinates": {
+      "latitude": 31.362233,
+      "longitude": 34.267122
+    }
+  },
+  {
+    "id": 18,
+    "name": "Water Trucking Distribution Point",
+    "siteName": "Al-Shahri Site",
+    "coordinates": {
+      "latitude": 31.361187,
+      "longitude": 34.269398
+    }
+  },
+  {
+    "id": 19,
+    "name": "Water Trucking Distribution Point",
+    "siteName": "Al-Farooq Site (Al-Hayat Area)",
+    "coordinates": {
+      "latitude": 31.362048,
+      "longitude": 34.266925
+    }
+  },
+  {
+    "id": 20,
+    "name": "Water Trucking Distribution Point",
+    "siteName": "Al-Quds Site (Abdeen Area)",
+    "coordinates": {
+      "latitude": 31.359625,
+      "longitude": 34.264948
+    }
+  },
+  {
+    "id": 21,
+    "name": "Water Trucking Distribution Point",
+    "siteName": "Al-Nakheel & Al-Zytoon Site",
+    "coordinates": {
+      "latitude": 31.360797,
+      "longitude": 34.265772
+    }
+  },
+  {
+    "id": 22,
+    "name": "Water Trucking Distribution Point",
+    "siteName": "Al-Fedaa Site",
+    "coordinates": {
+      "latitude": 31.359994,
+      "longitude": 34.263391
+    }
+  },
+  {
+    "id": 23,
+    "name": "Water Trucking Distribution Point",
+    "siteName": "Wijdan Site",
+    "coordinates": {
+      "latitude": 31.358312,
+      "longitude": 34.269270
+    }
+  },
+  {
+    "id": 24,
+    "name": "Water Trucking Distribution Point",
+    "siteName": "Al-Jawhari Site",
+    "coordinates": {
+      "latitude": 31.357893,
+      "longitude": 34.266585
+    }
+  },
+  {
+    "id": 25,
+    "name": "Water Trucking Distribution Point",
+    "siteName": "Al-Rimal Al-Thahabiea Site",
+    "coordinates": {
+      "latitude": 31.356580,
+      "longitude": 34.266529
+    }
+  },
+  {
+    "id": 26,
+    "name": "Water Trucking Distribution Point",
+    "siteName": "Al-Shaheed Jameel Site",
+    "coordinates": {
+      "latitude": 31.356508,
+      "longitude": 34.269575
+    }
+  },
+  {
+    "id": 27,
+    "name": "Water Trucking Distribution Point",
+    "siteName": "Al-Malaab Site",
+    "coordinates": {
+      "latitude": 31.362574,
+      "longitude": 34.277103
+    }
+  },
+  {
+    "id": 28,
+    "name": "Water Trucking Distribution Point",
+    "siteName": "Al-Karam Site",
+    "coordinates": {
+      "latitude": 31.364027,
+      "longitude": 34.276211
+    }
+  },
+  {
+    "id": 29,
+    "name": "Water Trucking Distribution Point",
+    "siteName": "Al-Farooq Site (Abu Farooq Area)",
+    "coordinates": {
+      "latitude": 31.366008,
+      "longitude": 34.273847
+    }
+  },
+  {
+    "id": 30,
+    "name": "Water Trucking Distribution Point",
+    "siteName": "Al Nour Site",
+    "coordinates": {
+      "latitude": 31.364656,
+      "longitude": 34.27368
+    }
+  },
+  {
+    "id": 31,
+    "name": "Health Space/Clinic - UNRWA",
+    "siteName": "Al-Farra Site",
+    "coordinates": {
+      "latitude": 31.360879,
+      "longitude": 34.270514
+    }
+  },
+  {
+    "id": 32,
+    "name": "Health Space/Clinic - PRCS",
+    "siteName": "Hanoon Site",
+    "coordinates": {
+      "latitude": 31.360879,
+      "longitude": 34.270514
+    }
+  },
+  {
+    "id": 33,
+    "name": "Health Space/Clinic - PRCS",
+    "siteName": "Al-Farooq Site (Al-Hayat Area)",
+    "coordinates": {
+      "latitude": 31.360879,
+      "longitude": 34.270514
+    }
+  },
+  {
+    "id": 34,
+    "name": "Health Space/Clinic - PRCS",
+    "siteName": "Al-Nakheel & Al-Zytoon Site",
+    "coordinates": {
+      "latitude": 31.2138,
+      "longitude": 34.1602
+    }
+  },
+  {
+    "id": 35,
+    "name": "Health Space/Clinic - Abdelshafi Org",
+    "siteName": "Al-Karam Site",
+    "coordinates": {
+      "latitude": 31.364468,
+      "longitude": 34.275855
+    }
+  },
+  {
+    "id": 36,
+    "name": "Health Space/Clinic - Project Hoppe",
+    "siteName": "Garb Al-Shaleh Site",
+    "coordinates": {
+      "latitude": 31.36669,
+      "longitude": 34.27382
+    }
+  },
+  {
+    "id": 37,
+    "name": "Health Space/Clinic - Rahma Around the world",
+    "siteName": "Al-Farooq Site (Abu Farooq Area)",
+    "coordinates": {
+      "latitude": 34.271767,
+      "longitude": 31.39634
+    }
+  },
+  {
+    "id": 38,
+    "name": "Community Kitchen (Tekeya) - WCK",
+    "siteName": "Al-Mosalla Site",
+    "coordinates": {
+      "latitude": 31.3596300,
+      "longitude": 34.2701680
+    }
+  },
+  {
+    "id": 39,
+    "name": "Community Kitchen (Tekeya) - Wafaa Al-Mohsineen",
+    "siteName": "Al-Farra Site",
+    "coordinates": {
+      "latitude": 31.359627,
+      "longitude": 34.268566
+    }
+  },
+  {
+    "id": 40,
+    "name": "Community Kitchen (Tekeya) - WCK",
+    "siteName": "Al-Quds Site (Al-Hayat Area)",
+    "coordinates": {
+      "latitude": 31.362782,
+      "longitude": 34.268443
+    }
+  },
+  {
+    "id": 41,
+    "name": "Community Kitchen (Tekeya) - Al-Fares Al-Shahem",
+    "siteName": "Al-Fedaa Site",
+    "coordinates": {
+      "latitude": 34.1552,
+      "longitude": 31.2136
+    }
+  },
+  {
+    "id": 42,
+    "name": "Community Kitchen (Tekeya) - WCK",
+    "siteName": "Al-Karam Site",
+    "coordinates": {
+      "latitude": 34.277276,
+      "longitude": 31.363089
+    }
+  },
+  {
+    "id": 43,
+    "name": "Community Kitchen (Tekeya) - Rahma Around the world",
+    "siteName": "Al-Quds Site (Al-Hayat Area)",
+    "coordinates": {
+      "latitude": 34.27114,
+      "longitude": 31.364807
+    }
+  },
+  {
+    "id": 44,
+    "name": "TLS/School - UNICEF",
+    "siteName": "Al-Mosalla Site",
+    "coordinates": {
+      "latitude": 31.360520,
+      "longitude": 34.273290
+    }
+  },
+  {
+    "id": 45,
+    "name": "TLS/School",
+    "siteName": "Al-Farra Site",
+    "coordinates": {
+      "latitude": 31.360560,
+      "longitude": 34.270225
+    }
+  },
+  {
+    "id": 46,
+    "name": "TLS/School - UNICEF",
+    "siteName": "Al-Farooq Site (Al-Hayat Area)",
+    "coordinates": {
+      "latitude": 3.12139,
+      "longitude": 34.1556
+    }
+  },
+  {
+    "id": 47,
+    "name": "TLS/School - Al-Sahabah Organization",
+    "siteName": "Al-Farooq Site (Al-Hayat Area)",
+    "coordinates": {
+      "latitude": 34.271812,
+      "longitude": 31.36493
+    }
+  },
+  {
+    "id": 48,
+    "name": "Community Space",
+    "siteName": "Al-Jawhari Site",
+    "coordinates": {
+      "latitude": 31.357893,
+      "longitude": 34.266585
+    }
+  },
+  {
+    "id": 49,
+    "name": "TLS/School - UNICEF",
+    "siteName": "Al-Nakheel & Al-Zytoon Site",
+    "coordinates": {
+      "latitude": 3.12139,
+      "longitude": 34.1556
+    }
+  },
+  {
+    "id": 50,
+    "name": "Nutrition Center - WFP/UNICEF",
+    "siteName": "Al-Farra Site",
+    "coordinates": {
+      "latitude": 31.360035,
+      "longitude": 34.270306
+    }
+  },
+  {
+    "id": 51,
+    "name": "Nutrition Center - Save the Children",
+    "siteName": "Al-Quds Site (Al-Hayat Area)",
+    "coordinates": {
+      "latitude": 31.363543,
+      "longitude": 34.269530
+    }
+  }
+]
+
