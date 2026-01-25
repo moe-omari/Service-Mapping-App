@@ -301,8 +301,8 @@
     "name": "Health Space/Clinic - PRCS",
     "siteName": "Al-Nakheel & Al-Zytoon Site",
     "coordinates": {
-      "latitude": 31.2138,
-      "longitude": 34.1602
+      "latitude": 31.360556,
+      "longitude": 34.266944
     }
   },
   {
@@ -328,8 +328,8 @@
     "name": "Health Space/Clinic - Rahma Around the world",
     "siteName": "Al-Farooq Site (Abu Farooq Area)",
     "coordinates": {
-      "latitude": 34.271767,
-      "longitude": 31.39634
+      "latitude": 31.3655020,
+      "longitude": 34.2715630
     }
   },
   {
@@ -364,8 +364,8 @@
     "name": "Community Kitchen (Tekeya) - Al-Fares Al-Shahem",
     "siteName": "Al-Fedaa Site",
     "coordinates": {
-      "latitude": 34.1552,
-      "longitude": 31.2136
+      "latitude": 31.36,
+      "longitude": 34.264167
     }
   },
   {
@@ -373,8 +373,8 @@
     "name": "Community Kitchen (Tekeya) - WCK",
     "siteName": "Al-Karam Site",
     "coordinates": {
-      "latitude": 34.277276,
-      "longitude": 31.363089
+      "latitude": 31.363089,
+      "longitude": 34.277276
     }
   },
   {
@@ -382,8 +382,8 @@
     "name": "Community Kitchen (Tekeya) - Rahma Around the world",
     "siteName": "Al-Quds Site (Al-Hayat Area)",
     "coordinates": {
-      "latitude": 34.27114,
-      "longitude": 31.364807
+      "latitude": 31.364807,
+      "longitude": 34.27114
     }
   },
   {
@@ -409,8 +409,8 @@
     "name": "TLS/School - UNICEF",
     "siteName": "Al-Farooq Site (Al-Hayat Area)",
     "coordinates": {
-      "latitude": 3.12139,
-      "longitude": 34.1556
+      "latitude": 31.36043,
+      "longitude": 34.266674
     }
   },
   {
@@ -418,8 +418,8 @@
     "name": "TLS/School - Al-Sahabah Organization",
     "siteName": "Al-Farooq Site (Al-Hayat Area)",
     "coordinates": {
-      "latitude": 34.271812,
-      "longitude": 31.36493
+      "latitude": 31.36493,
+      "longitude": 34.271812
     }
   },
   {
@@ -436,8 +436,8 @@
     "name": "TLS/School - UNICEF",
     "siteName": "Al-Nakheel & Al-Zytoon Site",
     "coordinates": {
-      "latitude": 3.12139,
-      "longitude": 34.1556
+      "latitude": 31.360833,
+      "longitude": 34.265833
     }
   },
   {

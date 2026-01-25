@@ -544,7 +544,7 @@ export default function Home() {
                     >
                       <p className="font-semibold text-sm">{service.translatedName}</p>
                       <p className="text-xs opacity-75 mb-1">
-                        {service.coordinates.latitude.toFixed(4)}, {service.coordinates.longitude.toFixed(4)}
+                        {service.coordinates.latitude}, {service.coordinates.longitude}
                       </p>
                       <span className={`inline-block px-2 py-0.5 rounded text-xs font-medium ${selectedService?.id === service.id ? 'bg-white/20' : badgeColor}`}>
                         {serviceType}
