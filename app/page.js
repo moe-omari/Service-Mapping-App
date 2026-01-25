@@ -188,7 +188,7 @@ export default function Home() {
       },
       services_provided: {
         "Community Space": "مساحة مجتمعية",
-        "Water Trucking Distribution Point": "نقطة توزيع مياه بالصهاريج",
+        "Water Trucking Distribution Point": "نقطة توزيع مياه",
         "Health Space/Clinic - UNRWA": "مساحة صحية / عيادة - الأونروا",
         "Health Space/Clinic - PRCS": "مساحة صحية / عيادة - الهلال الأحمر الفلسطيني",
         "Health Space/Clinic - Abdelshafi Org": "مساحة صحية / عيادة - مؤسسة عبد الشافي",
@@ -290,9 +290,9 @@ export default function Home() {
     if (!L || !userLocation || mapRef.current) return;
 
     const mapInstance = L.map('map').setView(userLocation, 13);
-    L.tileLayer('https://tiles.stadiamaps.com/tiles/osm_bright/{z}/{x}/{y}{r}.png', {
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
       maxZoom: 19,
-      attribution: '',
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
     }).addTo(mapInstance);
 
     // User location marker
