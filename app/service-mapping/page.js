@@ -9,6 +9,11 @@ import { kml as toGeoJSON } from '@mapbox/togeojson';
 
 const notoArabic = Noto_Sans_Arabic({ subsets: ['arabic'], weight: ['400', '500', '600', '700'] });
 
+const DEFAULT_MAP_CENTER = [31.4, 34.32];
+const DEFAULT_MAP_ZOOM = 12;
+const USER_LOCATION_ZOOM = 13;
+const SERVICE_FOCUS_ZOOM = 16;
+
 const campBoundaryFiles = [
   {
     id: 'fzr',
@@ -438,8 +443,8 @@ const rawServiceTranslations = [
     ar: 'مساحة صحية / عيادة - مستشفى حيفا الخيري',
   },
   {
-    key: "Health Space/Clinic - St. John's Eye Hospital",
-    en: "Health Space/Clinic - St. John's Eye Hospital",
+    key: 'Health Space/Clinic - St. John\'s Eye Hospital',
+    en: 'Health Space/Clinic - St. John\'s Eye Hospital',
     ar: 'مساحة صحية / عيادة - مستشفى سانت جون للعيون',
   },
   {
@@ -626,6 +631,8 @@ export default function Home() {
   const markersRef = useRef(new Map());
   const baseLayersRef = useRef({ street: null, satellite: null });
   const boundaryLayersRef = useRef([]);
+  const userMarkerRef = useRef(null);
+  const hasCenteredOnUserRef = useRef(false);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -691,11 +698,11 @@ export default function Home() {
       services: 'Services',
       yourLocation: 'Your Location',
       loading: 'Loading location...',
-      geolocationError: 'Unable to access your location. Using default location.',
-      geolocationInsecure: 'Location access requires HTTPS. Using default location.',
-      geolocationPermissionDenied: 'Location permission denied. Using default location.',
-      geolocationUnavailable: 'Location unavailable. Using default location.',
-      geolocationTimeout: 'Location request timed out. Using default location.',
+      geolocationError: 'Unable to access your location. Focusing on Gaza Strip.',
+      geolocationInsecure: 'Location access requires HTTPS. Focusing on Gaza Strip.',
+      geolocationPermissionDenied: 'Location permission denied. Focusing on Gaza Strip.',
+      geolocationUnavailable: 'Location unavailable. Focusing on Gaza Strip.',
+      geolocationTimeout: 'Location request timed out. Focusing on Gaza Strip.',
       selected: 'Selected',
       switchToArabic: 'العربية',
       switchToEnglish: 'English',
@@ -756,11 +763,11 @@ export default function Home() {
       services: 'الخدمات',
       yourLocation: 'موقعك',
       loading: 'جاري تحميل الموقع...',
-      geolocationError: 'تعذر الوصول إلى موقعك. سيتم استخدام الموقع الافتراضي.',
-      geolocationInsecure: 'الوصول إلى الموقع يتطلب HTTPS. سيتم استخدام الموقع الافتراضي.',
-      geolocationPermissionDenied: 'تم رفض إذن الموقع. سيتم استخدام الموقع الافتراضي.',
-      geolocationUnavailable: 'الموقع غير متاح. سيتم استخدام الموقع الافتراضي.',
-      geolocationTimeout: 'انتهت مهلة طلب الموقع. سيتم استخدام الموقع الافتراضي.',
+      geolocationError: 'تعذر الوصول إلى موقعك. سيتم التركيز على قطاع غزة.',
+      geolocationInsecure: 'الوصول إلى الموقع يتطلب HTTPS. سيتم التركيز على قطاع غزة.',
+      geolocationPermissionDenied: 'تم رفض إذن الموقع. سيتم التركيز على قطاع غزة.',
+      geolocationUnavailable: 'الموقع غير متاح. سيتم التركيز على قطاع غزة.',
+      geolocationTimeout: 'انتهت مهلة طلب الموقع. سيتم التركيز على قطاع غزة.',
       selected: 'المحدد',
       switchToArabic: 'العربية',
       switchToEnglish: 'English',
@@ -874,7 +881,6 @@ export default function Home() {
   useEffect(() => {
     if (typeof window !== 'undefined' && !window.isSecureContext) {
       setGeoError('geolocationInsecure');
-      setUserLocation([31.9454, 35.2338]);
       setLoading(false);
       return;
     }
@@ -892,8 +898,6 @@ export default function Home() {
           else if (error.code === error.POSITION_UNAVAILABLE) setGeoError('geolocationUnavailable');
           else if (error.code === error.TIMEOUT) setGeoError('geolocationTimeout');
           else setGeoError('geolocationError');
-          // Default to Gaza location
-          setUserLocation([31.9454, 35.2338]);
           setLoading(false);
         }
         , {
@@ -905,7 +909,6 @@ export default function Home() {
       // Geolocation not available, use default location
       console.log('Geolocation not supported');
       setGeoError('geolocationUnavailable');
-      setUserLocation([31.9454, 35.2338]);
       setLoading(false);
     }
   }, []);
@@ -976,9 +979,11 @@ export default function Home() {
   // Initialize map (wait for Leaflet to load)
   useEffect(() => {
     const L = leafletRef.current;
-    if (!leafletReady || !L || !userLocation || mapRef.current) return;
+    if (!leafletReady || !L || mapRef.current) return;
 
-    const mapInstance = L.map('map').setView(userLocation, 13);
+    const initialCenter = userLocation || DEFAULT_MAP_CENTER;
+    const initialZoom = userLocation ? USER_LOCATION_ZOOM : DEFAULT_MAP_ZOOM;
+    const mapInstance = L.map('map').setView(initialCenter, initialZoom);
 
     const streetLayer = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 19,
@@ -993,12 +998,6 @@ export default function Home() {
     streetLayer.addTo(mapInstance);
     baseLayersRef.current = { street: streetLayer, satellite: satelliteLayer };
     setIsSatelliteView(false);
-
-    // User location marker
-    L.marker(userLocation, { title: 'Your Location' })
-      .addTo(mapInstance)
-      .bindPopup('<b>Your Location</b>');
-
     // Group services by coordinates
     const locationMap = new Map();
     services.forEach(service => {
@@ -1058,6 +1057,11 @@ export default function Home() {
     mapRef.current = mapInstance;
     setMapReady(true);
     return () => {
+      if (userMarkerRef.current) {
+        mapInstance.removeLayer(userMarkerRef.current);
+        userMarkerRef.current = null;
+      }
+      hasCenteredOnUserRef.current = false;
       mapInstance.remove();
       markersRef.current.clear();
       baseLayersRef.current = { street: null, satellite: null };
@@ -1065,6 +1069,34 @@ export default function Home() {
       setMapReady(false);
     };
   }, [leafletReady, userLocation, services]);
+
+  useEffect(() => {
+    if (!mapReady || !mapRef.current || !leafletRef.current) return;
+    const mapInstance = mapRef.current;
+
+    if (!userLocation) {
+      if (userMarkerRef.current) {
+        mapInstance.removeLayer(userMarkerRef.current);
+        userMarkerRef.current = null;
+      }
+      hasCenteredOnUserRef.current = false;
+      return;
+    }
+
+    const L = leafletRef.current;
+    if (userMarkerRef.current) {
+      userMarkerRef.current.setLatLng(userLocation);
+    } else {
+      userMarkerRef.current = L.marker(userLocation, { title: 'Your Location' })
+        .addTo(mapInstance)
+        .bindPopup('<b>Your Location</b>');
+    }
+
+    if (!hasCenteredOnUserRef.current) {
+      mapInstance.flyTo(userLocation, Math.max(mapInstance.getZoom(), USER_LOCATION_ZOOM));
+      hasCenteredOnUserRef.current = true;
+    }
+  }, [userLocation, mapReady]);
 
   useEffect(() => {
     if (!leafletReady || !mapReady || !mapRef.current || !leafletRef.current) return;
@@ -1180,7 +1212,7 @@ export default function Home() {
   }, []);
   const handleServiceClick = (service) => {
     const L = leafletRef.current;
-    if (!L || !mapRef.current || !userLocation) return;
+    if (!L || !mapRef.current) return;
 
     const destinationKey = `${service.coordinates.latitude},${service.coordinates.longitude}`;
     setActiveMarkerKey(destinationKey);
@@ -1193,27 +1225,33 @@ export default function Home() {
       type: getServiceType(service.name),
     });
 
+    const destinationLatLng = L.latLng(service.coordinates.latitude, service.coordinates.longitude);
+    mapRef.current.flyTo(destinationLatLng, Math.max(mapRef.current.getZoom(), SERVICE_FOCUS_ZOOM));
+
     if (routingControl) {
       mapRef.current.removeControl(routingControl);
+      setRoutingControl(null);
     }
 
-    const newRoutingControl = L.Routing.control({
-      waypoints: [
-        L.latLng(userLocation[0], userLocation[1]),
-        L.latLng(service.coordinates.latitude, service.coordinates.longitude),
-      ],
-      router: L.Routing.osrmv1({ serviceUrl: 'https://router.project-osrm.org/route/v1' }),
-      routeWhileDragging: false,
-      lineOptions: { styles: [{ color: '#3b82f6', opacity: 0.8, weight: 5 }] },
-      addWaypoints: false,
-      draggableWaypoints: false,
-      fitSelectedRoutes: true,
-      showAlternatives: false,
-      show: false,
-      createMarker: () => null, // keep existing destination marker shape
-    }).addTo(mapRef.current);
+    if (userLocation) {
+      const newRoutingControl = L.Routing.control({
+        waypoints: [
+          L.latLng(userLocation[0], userLocation[1]),
+          destinationLatLng,
+        ],
+        router: L.Routing.osrmv1({ serviceUrl: 'https://router.project-osrm.org/route/v1' }),
+        routeWhileDragging: false,
+        lineOptions: { styles: [{ color: '#3b82f6', opacity: 0.8, weight: 5 }] },
+        addWaypoints: false,
+        draggableWaypoints: false,
+        fitSelectedRoutes: true,
+        showAlternatives: false,
+        show: false,
+        createMarker: () => null,
+      }).addTo(mapRef.current);
 
-    setRoutingControl(newRoutingControl);
+      setRoutingControl(newRoutingControl);
+    }
 
     // Auto-close mobile panel after 500ms on service selection
     if (isMobile) {
