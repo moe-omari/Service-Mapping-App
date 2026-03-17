@@ -979,7 +979,7 @@ export default function Home() {
   // Initialize map (wait for Leaflet to load)
   useEffect(() => {
     const L = leafletRef.current;
-    if (!leafletReady || !L || mapRef.current) return;
+    if (!leafletReady || !L || mapRef.current || loading) return;
 
     const initialCenter = userLocation || DEFAULT_MAP_CENTER;
     const initialZoom = userLocation ? USER_LOCATION_ZOOM : DEFAULT_MAP_ZOOM;
@@ -1068,7 +1068,7 @@ export default function Home() {
       setIsSatelliteView(false);
       setMapReady(false);
     };
-  }, [leafletReady, userLocation, services]);
+  }, [leafletReady, userLocation, services, loading]);
 
   useEffect(() => {
     if (!mapReady || !mapRef.current || !leafletRef.current) return;

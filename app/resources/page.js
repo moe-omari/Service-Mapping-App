@@ -208,12 +208,20 @@ const translations = {
 };
 
 export default function ResourcesLandingPage() {
-  const [lang, setLang] = useState(() => getStoredLanguage());
+  const [lang, setLang] = useState('en');
   const langOptions = [
     { value: 'en', label: 'English' },
     { value: 'ar', label: <span className={notoArabic.className}>العربية</span> },
   ];
   const t = translations[lang];
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const stored = getStoredLanguage();
+    if (stored && stored !== lang) {
+      setLang(stored);
+    }
+  }, []);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -226,15 +234,13 @@ export default function ResourcesLandingPage() {
       dir={lang === 'ar' ? 'rtl' : 'ltr'}
       style={{ fontFamily: lang === 'ar' ? undefined : 'Branding, sans-serif' }}
     >
-      <header className="shadow-md border-b border-gray-200 dark:border-zinc-800 px-2 sm:px-6 py-2" style={{ backgroundColor: '#1b1464' }}>
-        <div className="flex items-center justify-between gap-3 relative">
-          <div className="flex items-center gap-2 sm:gap-4">
-            <img src="/acted-logo.png" alt="ACTED Logo" className="h-10 sm:h-14 w-auto" />
-          </div>
-          <h1 className="text-lg sm:text-2xl font-bold text-white text-center absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 pointer-events-none">
+      <header className="shadow-md border-b border-gray-200 dark:border-zinc-800 px-1 sm:px-6 py-1 sm:py-2" style={{ backgroundColor: '#1b1464' }}>
+        <div className="flex items-center justify-center gap-1 sm:gap-3 w-full">
+          <img src="/acted-logo.png" alt="ACTED Logo" className="h-10 sm:h-16 w-auto" />
+          <h1 className="text-base sm:text-2xl font-bold text-center w-full whitespace-nowrap" style={{ color: '#fff' }}>
             {lang === 'ar' ? 'بوابة الموارد' : 'Resources Hub'}
           </h1>
-          <div style={{ minWidth: 140 }} className="sm:min-w-[160px]">
+          <div style={{ minWidth: 100 }} className="sm:min-w-[160px]">
             <Select
               value={langOptions.find(option => option.value === lang)}
               onChange={option => setLang(option?.value || 'en')}
@@ -245,14 +251,15 @@ export default function ResourcesLandingPage() {
                   backgroundColor: '#fff',
                   color: '#1b1464',
                   border: 'none',
-                  minHeight: 36,
+                  minHeight: 32,
                   boxShadow: state.isFocused ? '0 0 0 1px #1b1464' : base.boxShadow,
+                  fontSize: '0.8rem',
                 }),
                 singleValue: (base) => ({
                   ...base,
                   color: '#1b1464',
                   fontWeight: 'bold',
-                  fontSize: '0.9rem',
+                  fontSize: '0.8rem',
                 }),
                 menu: (base) => ({ ...base, zIndex: 20 }),
                 option: (base, state) => ({
@@ -260,9 +267,10 @@ export default function ResourcesLandingPage() {
                   backgroundColor: state.isSelected ? '#1b1464' : state.isFocused ? '#e0e7ff' : '#fff',
                   color: state.isSelected ? '#fff' : '#1b1464',
                   cursor: 'pointer',
+                  fontSize: '0.8rem',
                 }),
                 indicatorsContainer: (base) => ({ ...base, color: '#1b1464' }),
-                dropdownIndicator: (base) => ({ ...base, color: '#1b1464', padding: '4px' }),
+                dropdownIndicator: (base) => ({ ...base, color: '#1b1464', padding: '3px' }),
               }}
               instanceId="resources-lang-select"
               aria-label="Language Switch"

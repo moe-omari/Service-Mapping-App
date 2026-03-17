@@ -26,10 +26,18 @@ const interfaceText = {
 };
 
 export default function ResourceDetail({ resource }) {
-  const [lang, setLang] = useState(() => getStoredLanguage());
+  const [lang, setLang] = useState('en');
   const isArabic = lang === 'ar';
   const copy = resource.translations[lang] ?? resource.translations.en;
   const ui = interfaceText[lang];
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const stored = getStoredLanguage();
+    if (stored && stored !== lang) {
+      setLang(stored);
+    }
+  }, []);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
