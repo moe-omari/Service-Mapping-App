@@ -5,8 +5,33 @@ import Select from 'react-select';
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
 import { Noto_Sans_Arabic } from 'next/font/google';
+import { kml as toGeoJSON } from '@mapbox/togeojson';
 
 const notoArabic = Noto_Sans_Arabic({ subsets: ['arabic'], weight: ['400', '500', '600', '700'] });
+
+const campBoundaryFiles = [
+  {
+    id: 'fzr',
+    label: 'FZR Sites',
+    file: '/FZR_Sites.kml',
+    stroke: '#ea580c',
+    fill: '#ea580c33',
+  },
+  {
+    id: 'ghc',
+    label: 'GHC Sites',
+    file: '/GHC_Sites.kml',
+    stroke: '#0ea5e9',
+    fill: '#0ea5e933',
+  },
+  {
+    id: 'gfm',
+    label: 'GFM Sites',
+    file: '/GFM_Sites.kml',
+    stroke: '#22c55e',
+    fill: '#22c55e33',
+  },
+];
 
 // Fix Leaflet marker icons
 // delete L.Icon.Default.prototype._getIconUrl;
@@ -49,47 +74,30 @@ const getColorFromService = (serviceName) => {
   return color;
 };
 
+const createHealthIcon = (L, color = '#ff4444') => {
+  const svgIcon = `
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 36" width="25" height="41">
+      <path class="marker-glow" fill="none" stroke="var(--marker-glow-color, transparent)" stroke-width="var(--marker-glow-width, 0)" d="M12 0C7.029 0 3 4.029 3 9c0 7.5 9 18 9 18s9-10.5 9-18c0-4.971-4.029-9-9-9z" />
+      <path class="marker-outline" fill="none" stroke="var(--marker-outline-color, transparent)" stroke-width="var(--marker-outline-width, 0)" d="M12 0C7.029 0 3 4.029 3 9c0 7.5 9 18 9 18s9-10.5 9-18c0-4.971-4.029-9-9-9z" />
+      <path class="marker-shape" fill="${color}" stroke="var(--marker-stroke-color, #fff)" stroke-width="var(--marker-stroke-width, 1.5)" d="M12 0C7.029 0 3 4.029 3 9c0 7.5 9 18 9 18s9-10.5 9-18c0-4.971-4.029-9-9-9z"/>
+      <image href="/medical.png" x="6" y="6" width="12" height="12" style="filter: brightness(0) invert(1)" />
+    </svg>
+  `;
+  return L.divIcon({
+    html: svgIcon,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41],
+    popupAnchor: [1, -34],
+    className: 'custom-marker-icon',
+  });
+};
+
 const getMarkerIcon = (L, serviceName) => {
   const color = getColorFromService(serviceName);
   const type = getServiceType(serviceName);
 
-  // special cases for clinic and tls when single-service location
   if (type === 'Health Space/Clinic') {
-    // colored marker with smaller white medical icon
-    const svgIcon = `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 36" width="25" height="41">
-        <path class="marker-glow" fill="none" stroke="var(--marker-glow-color, transparent)" stroke-width="var(--marker-glow-width, 0)" d="M12 0C7.029 0 3 4.029 3 9c0 7.5 9 18 9 18s9-10.5 9-18c0-4.971-4.029-9-9-9z" />
-        <path class="marker-outline" fill="none" stroke="var(--marker-outline-color, transparent)" stroke-width="var(--marker-outline-width, 0)" d="M12 0C7.029 0 3 4.029 3 9c0 7.5 9 18 9 18s9-10.5 9-18c0-4.971-4.029-9-9-9z" />
-        <path class="marker-shape" fill="${color}" stroke="var(--marker-stroke-color, #fff)" stroke-width="var(--marker-stroke-width, 1.5)" d="M12 0C7.029 0 3 4.029 3 9c0 7.5 9 18 9 18s9-10.5 9-18c0-4.971-4.029-9-9-9z"/>
-        <image href="/medical.png" x="6" y="6" width="12" height="12" style="filter: brightness(0) invert(1)" />
-      </svg>
-    `;
-    return L.divIcon({
-      html: svgIcon,
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      className: 'custom-marker-icon',
-    });
-  }
-
-  if (type === 'TLS/School') {
-    // colored marker using service color, with white open-book icon
-    const svgIcon = `
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 36" width="25" height="41">
-        <path class="marker-glow" fill="none" stroke="var(--marker-glow-color, transparent)" stroke-width="var(--marker-glow-width, 0)" d="M12 0C7.029 0 3 4.029 3 9c0 7.5 9 18 9 18s9-10.5 9-18c0-4.971-4.029-9-9-9z" />
-        <path class="marker-outline" fill="none" stroke="var(--marker-outline-color, transparent)" stroke-width="var(--marker-outline-width, 0)" d="M12 0C7.029 0 3 4.029 3 9c0 7.5 9 18 9 18s9-10.5 9-18c0-4.971-4.029-9-9-9z" />
-        <path class="marker-shape" fill="${color}" stroke="var(--marker-stroke-color, #fff)" stroke-width="var(--marker-stroke-width, 1.5)" d="M12 0C7.029 0 3 4.029 3 9c0 7.5 9 18 9 18s9-10.5 9-18c0-4.971-4.029-9-9-9z"/>
-        <image href="/open-book.png" x="6" y="6" width="12" height="12" style="filter: brightness(0) invert(1)" />
-      </svg>
-    `;
-    return L.divIcon({
-      html: svgIcon,
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      className: 'custom-marker-icon',
-    });
+    return createHealthIcon(L, color);
   }
 
   const svgIcon = `
@@ -305,6 +313,151 @@ const rawServiceTranslations = [
     ar: 'مساحة صحية / عيادة - رحمة حول العالم',
   },
   {
+    key: 'Health Space/Clinic - Al-Shifa Hospital - phone need to edit',
+    en: 'Health Space/Clinic - Al-Shifa Hospital',
+    ar: 'مساحة صحية / عيادة - مستشفى الشفاء',
+  },
+  {
+    key: 'Health Space/Clinic - Public Aid Hospital',
+    en: 'Health Space/Clinic - Public Aid Hospital',
+    ar: 'مساحة صحية / عيادة - مستشفى الإغاثة العامة',
+  },
+  {
+    key: 'Health Space/Clinic - IMC Field Hospital',
+    en: 'Health Space/Clinic - IMC Field Hospital',
+    ar: 'مساحة صحية / عيادة - مستشفى ميداني (اللجنة الطبية الدولية)',
+  },
+  {
+    key: 'Health Space/Clinic - Al-Aqsa Hospital',
+    en: 'Health Space/Clinic - Al-Aqsa Hospital',
+    ar: 'مساحة صحية / عيادة - مستشفى الأقصى',
+  },
+  {
+    key: 'Health Space/Clinic - Al-Awda Hospital - Nuseirat',
+    en: 'Health Space/Clinic - Al-Awda Hospital - Nuseirat',
+    ar: 'مساحة صحية / عيادة - مستشفى العودة - النصيرات',
+  },
+  {
+    key: 'Health Space/Clinic - ICRC Field Hospital',
+    en: 'Health Space/Clinic - ICRC Field Hospital',
+    ar: 'مساحة صحية / عيادة - مستشفى ميداني (اللجنة الدولية للصليب الأحمر)',
+  },
+  {
+    key: 'Health Space/Clinic - UK Med Field Hospital',
+    en: 'Health Space/Clinic - UK Med Field Hospital',
+    ar: 'مساحة صحية / عيادة - مستشفى ميداني UK Med',
+  },
+  {
+    key: 'Health Space/Clinic - Nasser Hospital',
+    en: 'Health Space/Clinic - Nasser Hospital',
+    ar: 'مساحة صحية / عيادة - مستشفى ناصر',
+  },
+  {
+    key: 'Health Space/Clinic - MSF B Field Hospital Al-Zuwaida',
+    en: 'Health Space/Clinic - MSF B Field Hospital Al-Zuwaida',
+    ar: 'مساحة صحية / عيادة - مستشفى ميداني أطباء بلا حدود (بلجيكا) - الزوايدة',
+  },
+  {
+    key: 'Health Space/Clinic - PRCS Saraya Field Hospital Gaza City',
+    en: 'Health Space/Clinic - PRCS Saraya Field Hospital Gaza City',
+    ar: 'مساحة صحية / عيادة - مستشفى السرايا الميداني للهلال الأحمر الفلسطيني - غزة',
+  },
+  {
+    key: 'Health Space/Clinic - PRCS Al-Quds Hospital Gaza City',
+    en: 'Health Space/Clinic - PRCS Al-Quds Hospital Gaza City',
+    ar: 'مساحة صحية / عيادة - مستشفى القدس للهلال الأحمر الفلسطيني - غزة',
+  },
+  {
+    key: 'Health Space/Clinic - Patient Friends Benevolent Society',
+    en: 'Health Space/Clinic - Patient Friends Benevolent Society',
+    ar: 'مساحة صحية / عيادة - جمعية أصدقاء المريض الخيرية',
+  },
+  {
+    key: 'Health Space/Clinic - Kuwaiti Field Hospital Heal Palestine',
+    en: 'Health Space/Clinic - Kuwaiti Field Hospital Heal Palestine',
+    ar: 'مساحة صحية / عيادة - المستشفى الميداني الكويتي (Heal Palestine)',
+  },
+  {
+    key: 'Health Space/Clinic - PRCS field hospital Mawasi Khan Younis',
+    en: 'Health Space/Clinic - PRCS Field Hospital Mawasi Khan Younis',
+    ar: 'مساحة صحية / عيادة - مستشفى الهلال الأحمر الميداني - مواصي خان يونس',
+  },
+  {
+    key: 'Health Space/Clinic - Al-Amal Hospital',
+    en: 'Health Space/Clinic - Al-Amal Hospital',
+    ar: 'مساحة صحية / عيادة - مستشفى الأمل',
+  },
+  {
+    key: 'Health Space/Clinic - MSF Belgium - PHCC',
+    en: 'Health Space/Clinic - MSF Belgium - PHCC',
+    ar: 'مساحة صحية / عيادة - أطباء بلا حدود (بلجيكا) - مركز رعاية صحية أولية',
+  },
+  {
+    key: 'Health Space/Clinic - Kamal Adwan',
+    en: 'Health Space/Clinic - Kamal Adwan Hospital',
+    ar: 'مساحة صحية / عيادة - مستشفى كمال عدوان',
+  },
+  {
+    key: 'Health Space/Clinic - Al Karama',
+    en: 'Health Space/Clinic - Al Karama Hospital',
+    ar: 'مساحة صحية / عيادة - مستشفى الكرامة',
+  },
+  {
+    key: 'Health Space/Clinic - Mohamed Al Durrah Hospital',
+    en: 'Health Space/Clinic - Mohamed Al Durrah Hospital',
+    ar: 'مساحة صحية / عيادة - مستشفى محمد الدرة',
+  },
+  {
+    key: 'Health Space/Clinic - Al-Rantisi',
+    en: 'Health Space/Clinic - Al-Rantisi Hospital',
+    ar: 'مساحة صحية / عيادة - مستشفى الرنتيسي',
+  },
+  {
+    key: 'Health Space/Clinic - Al Helou International Hospital',
+    en: 'Health Space/Clinic - Al Helou International Hospital',
+    ar: 'مساحة صحية / عيادة - مستشفى الحلو الدولي',
+  },
+  {
+    key: 'Health Space/Clinic - Al Wafaa Rehabilitation Hospital',
+    en: 'Health Space/Clinic - Al Wafaa Rehabilitation Hospital',
+    ar: 'مساحة صحية / عيادة - مستشفى الوفاء للتأهيل',
+  },
+  {
+    key: 'Health Space/Clinic - Assahaba Medical Complex',
+    en: 'Health Space/Clinic - Assahaba Medical Complex',
+    ar: 'مساحة صحية / عيادة - مجمع الصحابة الطبي',
+  },
+  {
+    key: 'Health Space/Clinic - Al Ahli Arab Hospital',
+    en: 'Health Space/Clinic - Al Ahli Arab Hospital',
+    ar: 'مساحة صحية / عيادة - مستشفى الأهلي العربي',
+  },
+  {
+    key: 'Health Space/Clinic - Haifa Charity Hospital',
+    en: 'Health Space/Clinic - Haifa Charity Hospital',
+    ar: 'مساحة صحية / عيادة - مستشفى حيفا الخيري',
+  },
+  {
+    key: "Health Space/Clinic - St. John's Eye Hospital",
+    en: "Health Space/Clinic - St. John's Eye Hospital",
+    ar: 'مساحة صحية / عيادة - مستشفى سانت جون للعيون',
+  },
+  {
+    key: 'Health Space/Clinic - Yaffa Hospital',
+    en: 'Health Space/Clinic - Yaffa Hospital',
+    ar: 'مساحة صحية / عيادة - مستشفى يافا',
+  },
+  {
+    key: 'Health Space/Clinic - Dar Essalam Hospital',
+    en: 'Health Space/Clinic - Dar Essalam Hospital',
+    ar: 'مساحة صحية / عيادة - مستشفى دار السلام',
+  },
+  {
+    key: 'Health Space/Clinic - Al-Khair Hospital',
+    en: 'Health Space/Clinic - Al-Khair Hospital',
+    ar: 'مساحة صحية / عيادة - مستشفى الخير',
+  },
+  {
     key: 'Health Space/Clinic - UNRWA',
     en: 'Health Space/Clinic - UNRWA',
     ar: 'مساحة صحية / عيادة - الأونروا',
@@ -466,11 +619,13 @@ export default function Home() {
   const [isMobile, setIsMobile] = useState(false);
   const [activeMarkerKey, setActiveMarkerKey] = useState(null);
   const [isSatelliteView, setIsSatelliteView] = useState(false);
+  const [mapReady, setMapReady] = useState(false);
   const mapRef = useRef(null);
   const leafletRef = useRef(null);
   const markerPanelHideTimeout = useRef(null);
   const markersRef = useRef(new Map());
   const baseLayersRef = useRef({ street: null, satellite: null });
+  const boundaryLayersRef = useRef([]);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -659,7 +814,7 @@ export default function Home() {
         "Al-Rimal Al-Thahabiea Site": "موقع الرمال الذهبية",
         "Al-Shaer": "الشاعر",
         "Al-Shaheed Jameel Site": "موقع الشهيد جميل",
-        "Al-Shahri": "الشهري",
+        "Al-Shahri": "الشحري",
         "Al-Shorbaji": "الشربجي",
         "Al-Suniyah": "السنية",
         "Al-Wafa": "الوفاء",
@@ -672,13 +827,13 @@ export default function Home() {
         "Ayash site": "موقع عياش",
         "Basant": "بيسنت",
         "Bilal Bin Rabah": "بلال بن رباح",
-        "Garb Al-Shaleh Site": "موقع غرب الشالح",
+        "Garb Al-Shaleh Site": "موقع غرب الشاليه",
         "Ghawar Site": "موقع غوار",
         "Hanoon Site": "موقع حنون",
         "Hayat Site": "موقع حياة",
         "Misk and Laian": "مسك وليان",
-        "Musadar Al-Bahar": "مصادر البحر",
-        "Pioneer Site": "موقع الرواد",
+        "Musadar Al-Bahar": "مصدر البحر",
+        "Pioneer Site": "موقع بيونير",
         "Shady Site": "موقع شادي",
         "Shams": "شمس",
         "Smile": "ابتسامة",
@@ -859,8 +1014,11 @@ export default function Home() {
       const lat = servicesAtLoc[0].coordinates.latitude;
       const lng = servicesAtLoc[0].coordinates.longitude;
       let icon;
+      const allHealth = servicesAtLoc.every(s => getServiceType(s.name) === 'Health Space/Clinic');
       if (servicesAtLoc.length === 1) {
         icon = getMarkerIcon(L, servicesAtLoc[0].name);
+      } else if (allHealth) {
+        icon = createHealthIcon(L);
       } else {
         const colors = servicesAtLoc.map(s => getColorFromService(s.name));
         icon = getStripedMarkerIcon(L, colors);
@@ -898,13 +1056,64 @@ export default function Home() {
     }
 
     mapRef.current = mapInstance;
+    setMapReady(true);
     return () => {
       mapInstance.remove();
       markersRef.current.clear();
       baseLayersRef.current = { street: null, satellite: null };
       setIsSatelliteView(false);
+      setMapReady(false);
     };
   }, [leafletReady, userLocation, services]);
+
+  useEffect(() => {
+    if (!leafletReady || !mapReady || !mapRef.current || !leafletRef.current) return;
+    let isMounted = true;
+    const abortController = new AbortController();
+    const loadBoundaries = async () => {
+      const mapInstance = mapRef.current;
+      if (!mapInstance) return;
+      const loadedLayers = [];
+      for (const boundary of campBoundaryFiles) {
+        try {
+          const response = await fetch(boundary.file, { signal: abortController.signal });
+          if (!response.ok) {
+            console.error(`Failed to load boundary file ${boundary.file}`, response.statusText);
+            continue;
+          }
+          const kmlText = await response.text();
+          const xml = new window.DOMParser().parseFromString(kmlText, 'text/xml');
+          const geojson = toGeoJSON(xml);
+          const layer = leafletRef.current.geoJSON(geojson, {
+            style: {
+              color: boundary.stroke,
+              weight: 2,
+              fillColor: boundary.fill,
+              fillOpacity: 0.2,
+            },
+            onEachFeature: (feature, featureLayer) => {
+              const featureName = feature?.properties?.name || boundary.label;
+              featureLayer.bindTooltip(featureName, { sticky: true });
+            },
+          }).addTo(mapInstance);
+          loadedLayers.push(layer);
+        } catch (error) {
+          if (error.name === 'AbortError') return;
+          console.error(`Error while loading ${boundary.file}`, error);
+        }
+      }
+      if (isMounted) boundaryLayersRef.current = loadedLayers;
+    };
+    loadBoundaries();
+    return () => {
+      isMounted = false;
+      abortController.abort();
+      boundaryLayersRef.current.forEach((layer) => {
+        if (mapRef.current) mapRef.current.removeLayer(layer);
+      });
+      boundaryLayersRef.current = [];
+    };
+  }, [leafletReady, mapReady]);
 
   // Update marker popups when language changes
   useEffect(() => {

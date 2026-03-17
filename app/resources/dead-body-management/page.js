@@ -10,7 +10,7 @@ const resource = {
       description: 'Quick-reference visual for respectful and safe dead body management.',
     },
     ar: {
-      title: 'إدارة الجثث',
+      title: 'كيفية التعامل مع الجثث',
       description: 'مرجع بصري سريع لإدارة الجثث بشكل محترم وآمن.',
     },
   },

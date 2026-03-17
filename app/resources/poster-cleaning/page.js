@@ -10,8 +10,8 @@ const resource = {
       description: 'Step-by-step instructions on cleaning and maintaining safe jerry cans.',
     },
     ar: {
-      title: 'ملصق تنظيف الجِرار',
-      description: 'ملصق توعوي يوضح خطوات تنظيف جرار المياه بشكل آمن.',
+      title: 'ملصق تنظيف الجالونات',
+      description: 'ملصق توعوي يوضح خطوات تنظيف جالونات المياه بشكل آمن.',
     },
   },
 };
